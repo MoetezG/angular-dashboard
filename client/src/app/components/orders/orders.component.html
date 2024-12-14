@@ -1,0 +1,136 @@
+<div class="p-6 bg-white shadow-lg rounded-lg">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Order Management</h2>
+
+  <!-- Add Order Button -->
+  <app-button
+    label="+ Add Order"
+    [customClass]="'px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white'"
+    (onClick)="openAddOrderModal()"
+  ></app-button>
+
+  <!-- Orders Table -->
+  <table
+    class="w-full bg-gray-50 border border-gray-200 rounded-lg overflow-hidden shadow-md mt-6"
+  >
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Order ID</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Customer</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Total</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Status</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Date</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let order of orders"
+        class="hover:bg-gray-100 transition duration-300"
+      >
+        <td class="px-4 py-3">{{ order._id }}</td>
+        <td class="px-4 py-3">{{ order.userId?.userName }}</td>
+        <td class="px-4 py-3">{{ order.totalAmount | currency }}</td>
+        <td class="px-4 py-3">
+          <span
+            class="inline-block px-3 py-1 rounded-full text-white"
+            [ngClass]="statusColors[order.status]"
+          >
+            {{ order.status | titlecase }}
+          </span>
+        </td>
+        <td class="px-4 py-3">{{ order.orderDate | date : "short" }}</td>
+        <td class="px-4 py-3">
+          <app-button
+            label="Edit"
+            [customClass]="'px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white'"
+            (onClick)="editOrder(order)"
+          ></app-button>
+          <app-button
+            label="Delete"
+            [customClass]="
+              'ml-2 px-3 py-2 bg-red-600 hover:bg-red-500 text-white'
+            "
+            (onClick)="deleteOrder(order._id)"
+          ></app-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add/Edit Order Modal -->
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h3 class="text-lg font-semibold mb-4">
+        {{ isEditing ? "Edit Order" : "Add Order" }}
+      </h3>
+      <form
+        [formGroup]="orderForm"
+        (ngSubmit)="isEditing ? updateOrder() : saveOrder()"
+      >
+        <div class="mb-4">
+          <label for="userId" class="block text-sm font-medium text-gray-700"
+            >Customer</label
+          >
+          <select
+            id="userId"
+            formControlName="userId"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="">Select Customer</option>
+            <option *ngFor="let user of customers" [value]="user._id">
+              {{ user.userName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label
+            for="totalAmount"
+            class="block text-sm font-medium text-gray-700"
+            >Total Amount</label
+          >
+          <input
+            type="number"
+            id="totalAmount"
+            formControlName="totalAmount"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="status" class="block text-sm font-medium text-gray-700"
+            >Status</label
+          >
+          <select
+            id="status"
+            formControlName="status"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="pending">Pending</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <app-button
+            label="Cancel"
+            [customClass]="
+              'px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800'
+            "
+            (onClick)="closeModal()"
+          ></app-button>
+          <app-button
+            label="Save"
+            [customClass]="'px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white'"
+            type="submit"
+          ></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="p-6 bg-white shadow-lg rounded-lg">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Product Management</h2>
+
+  <!-- Add Product Button -->
+  <app-button
+    label="+ Add Product"
+    [customClass]="'px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white'"
+    (onClick)="openAddProductModal()"
+  ></app-button>
+
+  <!-- Products Table -->
+  <table
+    class="w-full bg-gray-50 border border-gray-200 rounded-lg overflow-hidden shadow-md mt-6"
+  >
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-3 text-left font-medium text-gray-700"></th>
+
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Name</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Category</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Price</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Stock</th>
+        <th class="px-4 py-3 text-left font-medium text-gray-700">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let product of products"
+        class="hover:bg-gray-100 transition duration-300"
+      >
+        <td class="px-4 py-3 flex items-center">
+          <!-- Display product image -->
+          <img
+            *ngIf="product.image"
+            src="http://localhost:8080/api/uploads/{{ product.image }}"
+            alt="{{ product.name }} image"
+            class="w-12 h-12 mr-4 rounded-full object-cover"
+          />
+        </td>
+
+        <td class="px-4 py-3">{{ product.name }}</td>
+        <td class="px-4 py-3">{{ product.categoryId?.name }}</td>
+
+        <td class="px-4 py-3">{{ product.price | currency }}</td>
+        <td class="px-4 py-3">{{ product.stock }}</td>
+        <td class="px-4 py-3">
+          <app-button
+            label="Edit"
+            [customClass]="'px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white'"
+            (onClick)="editProduct(product)"
+          ></app-button>
+          <app-button
+            label="Delete"
+            [customClass]="
+              'ml-2 px-3 py-2 bg-red-600 hover:bg-red-500 text-white'
+            "
+            (onClick)="deleteProduct(product._id)"
+          ></app-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add/Edit Product Modal -->
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h3 class="text-lg font-semibold mb-4">
+        {{ isEditing ? "Edit Product" : "Add Product" }}
+      </h3>
+      <form (ngSubmit)="saveProduct()">
+        <div class="mb-4">
+          <label for="image" class="block text-sm font-medium text-gray-700"
+            >Image</label
+          >
+          <input
+            type="file"
+            id="image"
+            (change)="onImageChange($event)"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-gray-700"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="currentProduct.name"
+            name="name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="category" class="block text-sm font-medium text-gray-700"
+            >Category</label
+          >
+          <select
+            id="category"
+            [(ngModel)]="currentProduct.categoryId"
+            name="category"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+            required
+          >
+            <option *ngFor="let category of categories" [value]="category._id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="price" class="block text-sm font-medium text-gray-700"
+            >Price</label
+          >
+          <input
+            type="number"
+            id="price"
+            [(ngModel)]="currentProduct.price"
+            name="price"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="stock" class="block text-sm font-medium text-gray-700"
+            >Stock</label
+          >
+          <input
+            type="number"
+            id="stock"
+            [(ngModel)]="currentProduct.stock"
+            name="stock"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="description"
+            class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            [(ngModel)]="currentProduct.description"
+            name="description"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:outline-none"
+            required
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <app-button
+            label="Cancel"
+            [customClass]="
+              'px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800'
+            "
+            (onClick)="closeModal()"
+          ></app-button>
+          <app-button
+            label="Save"
+            [customClass]="'px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white'"
+            type="submit"
+          ></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.bg-gray-800 {
+  background-color: #1f2937;
+}
+
+.hover\:bg-gray-700:hover {
+  background-color: #374151;
+}
+
+.sticky {
+  position: -webkit-sticky; /* Safari support */
+  position: sticky;
+}

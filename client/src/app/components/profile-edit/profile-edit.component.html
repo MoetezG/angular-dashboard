@@ -1,0 +1,93 @@
+<div class="p-6 bg-white shadow-md rounded-lg max-w-3xl mx-auto">
+  <h2 class="text-xl font-bold text-gray-900 mb-6">Edit Profile</h2>
+
+  <!-- Profile Picture Section -->
+  <div class="flex items-center mb-6">
+    <div class="relative w-24 h-24 rounded-full overflow-hidden shadow-md">
+      <img
+        [src]="profileImage || 'assets/default-profile.png'"
+        alt="Profile Picture"
+        class="w-full h-full object-cover"
+      />
+      <button
+        *ngIf="profileImage"
+        (click)="deleteImage()"
+        class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700 transition duration-300"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    <div class="ml-6">
+      <label
+        class="block text-sm font-semibold mb-2 text-gray-700"
+        for="profileImage"
+        >Upload Profile Picture</label
+      >
+      <input
+        type="file"
+        id="profileImage"
+        (change)="onImageUpload($event)"
+        class="block text-sm text-gray-600"
+      />
+    </div>
+  </div>
+
+  <!-- Profile Information Form -->
+  <form (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-sm font-semibold text-gray-700"
+        >Full Name</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter your name"
+      />
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-sm font-semibold text-gray-700"
+        >Email</label
+      >
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter your email"
+      />
+    </div>
+
+    <!-- Phone -->
+    <div>
+      <label for="phone" class="block text-sm font-semibold text-gray-700"
+        >Phone</label
+      >
+      <input
+        type="text"
+        id="phone"
+        name="phone"
+        class="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter your phone number"
+      />
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end space-x-4">
+      <app-button
+        label="Cancel"
+        [customClass]="'px-4 py-2 bg-gray-200 hover:bg-gray-300'"
+        type="reset"
+      ></app-button>
+      <app-button
+        label="Save Changes"
+        [customClass]="'px-4 py-2 bg-blue-600 text-white hover:bg-blue-700'"
+        type="submit"
+      ></app-button>
+    </div>
+  </form>
+</div>

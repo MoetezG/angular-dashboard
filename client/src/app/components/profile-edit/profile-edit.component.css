@@ -1,0 +1,4 @@
+/* Add spacing and layout styles */
+input:focus {
+  outline: none;
+}

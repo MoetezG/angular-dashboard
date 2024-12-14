@@ -1,0 +1,71 @@
+<div
+  class="charts-container grid md:grid-cols-2 gap-6 p-8 bg-gray-50 rounded-xl shadow-inner"
+>
+  <!-- Sales & Revenue Chart -->
+  <div class="chart-card group">
+    <div class="chart-header bg-indigo-100 text-indigo-700">
+      <h3>Sales & Revenue</h3>
+    </div>
+    <div class="chart-body">
+      <canvas
+        baseChart
+        [data]="salesChartData"
+        [options]="salesChartOptions"
+        [legend]="salesChartLegend"
+        chartType="bar"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Orders Chart -->
+  <div class="chart-card group">
+    <div class="chart-header bg-green-100 text-green-700">
+      <h3>Orders</h3>
+    </div>
+    <div class="chart-body">
+      <canvas
+        baseChart
+        [data]="ordersChartData"
+        [options]="ordersChartOptions"
+        [legend]="ordersChartLegend"
+        chartType="line"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Products Chart -->
+  <div class="chart-card group">
+    <div class="chart-header bg-purple-100 text-purple-700">
+      <h3>Products Distribution</h3>
+    </div>
+    <div class="chart-body">
+      <canvas
+        baseChart
+        [data]="productsChartData"
+        [options]="productsChartOptions"
+        [legend]="productsChartLegend"
+        chartType="pie"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Customers Chart -->
+  <div class="chart-card group">
+    <div class="chart-header bg-teal-100 text-teal-700">
+      <h3>Customer Growth</h3>
+    </div>
+    <div class="chart-body">
+      <canvas
+        baseChart
+        [data]="customersChartData"
+        [options]="customersChartOptions"
+        [legend]="customersChartLegend"
+        chartType="doughnut"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>

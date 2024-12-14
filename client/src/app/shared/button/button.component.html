@@ -1,0 +1,14 @@
+<button
+  [type]="type"
+  [ngClass]="[
+    'px-4 py-2 text-white rounded-2xl shadow-md transition duration-300',
+    isDisabled
+      ? 'bg-gray-500 cursor-not-allowed'
+      : 'bg-gray-900 hover:bg-gray-800',
+    customClass
+  ]"
+  [disabled]="isDisabled"
+  (click)="handleClick()"
+>
+  {{ label }}
+</button>
